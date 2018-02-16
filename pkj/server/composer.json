@@ -1,0 +1,7 @@
+{
+    "name": "imperiums/server",
+    "require": {
+        "php-ds/php-ds": "^1.2",
+        "danielstjules/stringy": "^3.1"
+    }
+}

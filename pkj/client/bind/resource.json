@@ -1,0 +1,7 @@
+{
+    "name": "bind",
+    "files": ["bind.js"],
+    "onload": "",
+    "update": "bindRefresh();",
+    "author": "Felipe Nunes Azambuja"
+}

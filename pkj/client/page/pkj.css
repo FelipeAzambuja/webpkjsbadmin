@@ -1,0 +1,7 @@
+div[page] {
+    display: none;
+}
+
+*[template] {
+    display: none;
+}
