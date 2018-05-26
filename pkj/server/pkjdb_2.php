@@ -31,7 +31,7 @@ class Db {
             echo "servidor invalido";
             exit();
         }
-
+//        try {
         if ($servidor === "sqlite") {
             $endereco = __DIR__ . '/' . $endereco;
             $this->pdo = new PDO("sqlite:{$endereco}", null, null, array(
@@ -40,6 +40,11 @@ class Db {
         } else {
             $this->pdo = new PDO("{$servidor}:host={$endereco};dbname={$base}" . (($servidor === "mysql") ? ";charset=UTF8" : ""), $usuario, $senha);
         }
+//        } catch (Exception $exc) {
+//            echo $exc->getTraceAsString();
+//        } finally {
+//            
+//        }
     }
 
     /**
@@ -95,7 +100,7 @@ class Db {
      * @param array $parameters
      * @return array
      */
-    function query($sql, $parameters = array()) {
+    function query($sql, $parameters = array(), $class = null) {
         $p = $this->statement($sql, $parameters);
         if ($p === false) {
             return false;
@@ -103,7 +108,13 @@ class Db {
         if ($this->fetch === null) {
             $this->fetch = PDO::FETCH_OBJ;
         }
-        return $p->fetchAll($this->fetch);
+        if ($class !== null) {
+            $this->fetch = PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE;
+            $p->setFetchMode($this->fetch, $class);
+            return $p->fetchAll();
+        } else {
+            return $p->fetchAll($this->fetch);
+        }
     }
 
     function is_multibyte($s) {
@@ -333,7 +344,7 @@ class Db {
         if (strpos($type, "|")) {
             $type = explode("|", $type)[0];
         }
-        if (class_exists($type)) {
+        if (class_exists($type) && $type !== 'datetime') {
             return "integer";
         }
         switch ($type) {
@@ -484,8 +495,8 @@ class Db {
                 return "datetime";
                 break;
             default:
-                //varchar
-                return "string";
+                //object class
+                return $type;
                 break;
         }
     }
@@ -598,6 +609,12 @@ function oneCol($query, $col = "") {
     }
 }
 
+/**
+ * 
+ * @param type $query
+ * @param type $column
+ * @return array|static|self
+ */
 function col($query, $column) {
     $retorno = array();
     if (count($query) < 1) {

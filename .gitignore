@@ -1,3 +1,9 @@
-/nbproject/private/
-templates_c/
+index.php.bak
 config.php
+pkj/server/pkjassets.php.bak
+pkj/server/pkjdb_2.php.bak
+pkj/server/pkjconf.php.bak
+templates_c/
+/public/update.php
+/pkj2/
+public/nf_pulando.php

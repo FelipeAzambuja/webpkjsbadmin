@@ -18,7 +18,7 @@
   <?php 
   import('jquery');
   import('pkj');
-  import('bind');
+  import('bind2');
   ?>
 </head>
 

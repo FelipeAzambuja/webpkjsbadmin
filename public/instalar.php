@@ -22,7 +22,7 @@ function buscarBancos($form) {
     <?php
     $html = ob_get_contents();
     ob_end_clean();
-    setHtml('#banco', $html);
+    setHtml('name=banco', $html);
 }
 
 function mostrarTexto($form) {
@@ -72,7 +72,7 @@ function instalar($form) {
         $banco = $form['banco'];
     }
     file_put_contents('config.bck.php', file_get_contents('config.php'));
-    $code = '';
+    /*
     $code .= '<?php'.PHP_EOL;
     $code .= 'conf::$dateFormat = \'d/m/Y\' ;'.PHP_EOL;
     $code .= 'conf::$servidor = \'mysql\' ;'.PHP_EOL;
@@ -82,6 +82,7 @@ function instalar($form) {
     $code .= 'conf::$base = \'' . $banco . '\' ;'.PHP_EOL;
     $code .= 'conf::$session = \'database\';'.PHP_EOL;
     file_put_contents('config.new.php', $code);
+    */
     bind()->setTimeout('instalar2()', 1000);
 }
 
@@ -138,6 +139,9 @@ function instalar10($form) {
     html('#pgb', 'Instalado com sucesso');
 }
 ?>
+<script>
+eventos = {};
+</script>
 <div class="card card-login mx-auto mt-5">
     <div class="card-header">Instalar o painel</div>
     <div class="card-body">

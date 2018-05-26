@@ -8,6 +8,10 @@ function sql($db = null) {
     return new SQL($db);
 }
 
+/**
+ * @todo implementar group by e order by 
+ * @property Db $db DB
+ */
 class SQL {
 
     /**
@@ -19,14 +23,23 @@ class SQL {
     public $table = null;
     public $where = [];
     public $data = [];
-    public $group = [];
-    public $having = [];
+    public $group = []; //implementar
+    public $having = []; //implementar
+    public $orderby = []; //implementar
     public $join = [];
     public $limit = -1;
     public $offset = -1;
     public $sql = '';
+    public $alias = null;
+    public $class = null;
 
     private function is_multibyte($s) {
+        if ($s === '') {
+            return false;
+        }
+        if (is_numeric($s)) {
+            return false;
+        }
         $finfo = new finfo(FILEINFO_MIME_ENCODING);
         return $finfo->buffer($s) === 'binary';
     }
@@ -49,8 +62,7 @@ class SQL {
             $t_f = $this->db->table_fields($this->table);
             foreach ($fields as $key => $value) {
                 if (!in_array($key, col($t_f, 'name'))) {
-                    $sql = 'alter table '.$this->table.' add column ' . $key . ' ' . $value;
-                    
+                    $sql = 'alter table ' . $this->table . ' add column ' . $key . ' ' . $value;
                     return $this->db->query($sql);
                 }
             }
@@ -84,11 +96,27 @@ class SQL {
      */
     function table($name) {
         $this->table = $name;
+        $this->alias = $name;
         return $this;
     }
 
-    function join($table, $tableField, $id = 'id') {
-        $this->join[] = [$table, $tableField, $id];
+    function group($field) {
+        $this->group[] = $field;
+        return $this;
+    }
+
+    function having($hav) {
+        $this->having[] = $hav;
+        return $this;
+    }
+
+    function orderby($field, $mode = 'DESC') {
+        $this->orderby[] = [$field, $mode];
+        return $this;
+    }
+
+    function join($table, $tableField, $id = 'id', $class = null, $count = 'many') {
+        $this->join[] = [$table, $tableField, $id, $class, $count];
         return $this;
     }
 
@@ -162,6 +190,11 @@ class SQL {
         return implode('', $wheres);
     }
 
+    /**
+     * 
+     * @param array $fields 
+     * @return $this
+     */
     function select($fields = []) {
         if ($fields === []) {
             $fields = ['*'];
@@ -197,7 +230,8 @@ class SQL {
             if ($count_commit === false) {
                 return true;
             } else {
-                return $this->where($data)->select()->first();
+                $this->where($data);
+                return one($this->db->query('SELECT * FROM ' . $this->table . ' WHERE ' . $this->get_where() . ' order by id desc'));
             }
         }
     }
@@ -234,7 +268,7 @@ class SQL {
         }
         $sql = 'update ' . $this->table . ' set ';
         $p = [];
-        foreach ($values as $key => $value) {
+        foreach ($prepared as $key => $value) {
             $p[] = " {$key} = {$value} ";
         }
         $sql .= implode(',', $p);
@@ -262,17 +296,54 @@ class SQL {
 
     /**
      * 
-     * @return array
+     * @return array|static
      */
-    function get() {
-        $data = $this->db->query($this->sql);
+    function get($class = null) {
+        if ($this->sql === '') {
+            $this->select();
+        }
+        if ($this->class !== null && $class == null) {
+            $class = $this->class;
+        }
+        if (count($this->group) > 0) {
+            $this->sql .= ' GROUP BY ';
+            foreach ($this->group as $g) {
+                $this->sql .= $g . ' ';
+            }
+        }
+        $this->sql .= ' ';
+        if (count($this->having) > 0) {
+            $this->sql .= ' HAVING ';
+            foreach ($this->having as $h) {
+                $this->sql .= $h . ' ';
+            }
+        }
+        $this->sql .= ' ';
+        if (count($this->orderby) > 0) {
+            $this->sql .= ' ORDER BY ';
+            foreach ($this->orderby as $o) {
+                $this->sql .= $o[0] . ' ' . $o[1] . ' ';
+            }
+        }
+        $this->sql .= ' ';
+
+        $data = $this->db->query($this->sql, [], $class);
         if (count($this->join) > 0) {
+
             for ($index = 0; $index < count($data); $index++) {
                 foreach ($this->join as $j) {
                     if ($j[0] instanceof SQL) {
-                        $data[$index]->{$j[0]->table} = $j[0]->where($j[1], $data[$index]->{$j[2]})->select()->get();
+                        if ($j[4] === 'one') {
+                            $data[$index]->{$j[0]->alias} = one($j[0]->where($j[1], $data[$index]->{$j[2]})->select()->get($j[3]));
+                        } else {
+                            $data[$index]->{$j[0]->alias} = $j[0]->where($j[1], $data[$index]->{$j[2]})->select()->get($j[3]);
+                        }
                     } else {
-                        $data[$index]->{$j[0]} = sql($this->db)->table($j[0])->where($j[1], $data[$index]->{$j[2]})->get();
+                        if ($j[4] === 'one') {
+                            $data[$index]->{$j[0]} = one(sql($this->db)->table($j[0])->where($j[1], $data[$index]->{$j[2]})->get());
+                        } else {
+                            $data[$index]->{$j[0]} = sql($this->db)->table($j[0])->where($j[1], $data[$index]->{$j[2]})->get();
+                        }
                     }
                 }
             }
@@ -318,7 +389,11 @@ class SQL {
             return null;
         }
         if ($this->is_multibyte($value)) {
-            return $this->db->pdo->quote($value, PDO::PARAM_LOB);
+            if ($this->db->driver === 'sqlite') {
+                return 'x\'' . bin2hex($value) . '\'';
+            } else {
+                return $this->db->pdo->quote($value, PDO::PARAM_LOB);
+            }
         } else if (is_date($value)) {
             return $this->db->pdo->quote(cdate($value)->format('Y-m-d H:i:s'), PDO::PARAM_STR);
         } else {

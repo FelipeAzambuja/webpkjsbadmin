@@ -1,6 +1,8 @@
 <?php
 
 include 'pkj/server/pkjall.php';
+//include "pkj/server/pkjbind.php";
+//run_forever(false);
 try {
     $template = '';
     ob_start();
@@ -29,6 +31,13 @@ try {
     }
     $url = "{$protocol}://{$_SERVER['HTTP_HOST']}" . $url;
 
+//    if ($path === 'public/pkj.vue.component.php') {
+//        include "pkj/server/pkjbind.php";
+//        vue()->load($_GET['page'], $_GET['name']);
+//        exit();
+//    }
+
+
 //if ( !file_exists( $path ) ) {
     if (file_exists(replace($path, '.php', '.html'))) {
         $html = file_get_contents(replace($path, '.php', '.html'));
@@ -36,6 +45,8 @@ try {
         $html = replace($html, 'src="', 'src="' . $url . dirname($path) . '/');
         echo $html;
         exit();
+    } elseif (file_exists(replace($path, '.php', '.vue'))) {
+        echo file_get_contents(replace($path, '.php', '.vue'));
     } elseif (file_exists(replace($path, '.php', '.tpl'))) {
         if (file_exists($path)) {
             include $path;
@@ -61,7 +72,6 @@ try {
 
 
         if (isset($_POST["CMD"])) {
-
             ob_clean();
             include "pkj/server/pkjbind.php";
         }
@@ -92,7 +102,8 @@ try {
         echo ob_get_clean();
     }
 } catch (Throwable $ex) {
-    dd($ex);
+//    exit();
+    d($ex);
 } finally {
     //ob_flush();
 }

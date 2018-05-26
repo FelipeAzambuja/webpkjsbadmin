@@ -1,13 +1,49 @@
 <?php
+
+/**
+ * @see GUMP
+ * @param array $form
+ * @param array $rules
+ * @return array
+ */
+function is_valid($form, $rules) {
+    $gump = new GUMP('pt-br');
+    $gump->validation_rules($rules);
+    if ($gump->run($form) === false) {
+        return $gump->get_readable_errors(false);
+    } else {
+        return true;
+    }
+}
+
 /**
  * 
  * @param type $v
  * @param type $enc
  * @return Stringy\Stringy
  */
-function str($v,$enc = null) {
+function stringy($v, $enc = null) {
     return Stringy\Stringy::create($v, $enc);
 }
+
+/**
+ * 
+ * @param type $data
+ * @return \Intervention\Image\Image
+ */
+function intervention($data) {
+    return Intervention\Image\ImageManagerStatic::make($data);
+}
+
+/**
+ * 
+ * @param type $data
+ * @return \Intervention\Image\Image
+ */
+function image($data) {
+    return Intervention\Image\ImageManagerStatic::make($data);
+}
+
 /**
  * 
  * @param object $destination
@@ -406,7 +442,7 @@ function cdate($value = "") {
 }
 
 function is_date($value) {
-    if(is_array($value)){
+    if (is_array($value)) {
         return false;
     }
     $v = explode('-', $value);
@@ -416,7 +452,7 @@ function is_date($value) {
                 return false;
             }
         }
-    }else{
+    } else {
         return false;
     }
     $v = checkdate($v[1], $v[2], $v[0]);

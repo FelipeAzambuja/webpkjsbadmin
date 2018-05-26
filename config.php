@@ -1,9 +1,18 @@
 <?php
-
-conf::$dateFormat = 'd/m/Y' ;
-conf::$servidor = 'mysql' ;
-conf::$endereco = '' ;
-conf::$usuario = '' ;
-conf::$senha = '' ;
-conf::$base = '' ;
-conf::$session = 'database';
+if ($_SERVER['SERVER_NAME'] === 'newbgp.com.br') {
+    conf::$dateFormat = 'd/m/Y';
+    conf::$servidor = 'sqlite';
+    conf::$endereco = '../../banco.sqlite';
+    conf::$usuario = 'root';
+    conf::$senha = '';
+    conf::$base = '';
+    conf::$session = 'database';
+} else {
+    conf::$dateFormat = 'd/m/Y';
+    conf::$servidor = 'sqlite';
+    conf::$endereco = '../../banco.sqlite';
+    conf::$usuario = 'root';
+    conf::$senha = '';
+    conf::$base = '';
+    conf::$session = 'database';
+}
