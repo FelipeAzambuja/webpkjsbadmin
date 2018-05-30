@@ -68,7 +68,7 @@ if ($editando) {
                 <?php
                 upload('imagem','change="updateFoto()"', 12);
                 function updateFoto($form) {
-                    $data = upload_parser('imagem')->image()->encode('png');
+                    $data = upload_parser('imagem')->image()->encode('jpg',40);
                     
                     attr('#imagem-profile', 'src', srcbase64($data));
                 }
