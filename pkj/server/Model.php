@@ -316,7 +316,6 @@ class Model {
 
             $data[$key] = $this->sql->db->detranslate_field($value[1]);
         }
-
         return $this->sql->create($data);
     }
 

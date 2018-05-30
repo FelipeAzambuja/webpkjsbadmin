@@ -21,10 +21,10 @@ $titulo = "Usuários" ;
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ( orm_usuarios()->select( [] ) as $usuario ): ?>
+                    <?php foreach ( model_usuarios()->get() as $usuario ): ?>
                         <tr>
                             <td>
-                                <?= imgtag64( $usuario->imagem , 'class="img-thumbnail" style="width:200px"' ) ?>
+                                <img src="<?= $usuario->imagem ?>" class="img-thumbnail" style="width:200px" alt="">
                             </td>
                             <td><?= $usuario->nome ?></td>
                             <td><?= $usuario->nivel ?></td>

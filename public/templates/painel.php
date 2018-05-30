@@ -1,3 +1,12 @@
+<?php
+if(isset($_GET['sair'])){
+    session_set('usuario','');
+}
+if(session_get('usuario') === ''){
+    header('Location: ../index');
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -43,122 +52,8 @@
                             <li>
                                 <a href="<?= $url ?>admin/pessoas/usuarios/index">Usuários</a>
                             </li>
-                            <li>
-                                <a href="<?= $url ?>admin/pessoas/clientes/index">Clientes</a>
-                            </li>
-
                         </ul>
                     </li>
-                    
-                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Code">
-                        <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseCode" data-parent="#exampleAccordion">
-                            <i class="fa fa-fw fa-code"></i>
-                            <span class="nav-link-text">Projetos</span>
-                        </a>
-                        <ul class="sidenav-second-level collapse" id="collapseCode">
-                            <li>
-                                <a href="<?= $url; ?>admin/projetos/lista">Lista</a>
-                            </li>
-                            <li>
-                                <a href="<?= $url; ?>admin/projetos/ponto">Ponto</a>
-                            </li>
-                            <li>
-                                <a href="<?= $url; ?>admin/projetos/senhas">Senhas</a>
-                            </li>
-                            <li>
-                                <a href="<?= $url; ?>admin/projetos/resumo">Resumo</a>
-                            </li>
-                        </ul>
-                    </li>
-                    
-                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Comercial">
-                        <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComercial" data-parent="#exampleAccordion">
-                            <i class="fa fa-fw fa-line-chart "></i>
-                            <span class="nav-link-text">Comercial</span>
-                        </a>
-                        <ul class="sidenav-second-level collapse" id="collapseComercial">
-                            <li>
-                                <a href="">Propagandas</a>
-                            </li>
-                            <li>
-                                <a href="cards.html">Lista</a>
-                            </li>
-                            <li>
-                                <a href="cards.html">Leads</a>
-                            </li>
-                            <li>
-                                <a href="cards.html">Resumo</a>
-                            </li>
-                        </ul>
-                    </li>
-                    
-                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Financeiro">
-                        <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseFinaceiro" data-parent="#exampleAccordion">
-                            <i class="fa fa-fw fa-money"></i>
-                            <span class="nav-link-text">Financeiro</span>
-                        </a>
-                        <ul class="sidenav-second-level collapse" id="collapseFinaceiro">
-                            <li>
-                                <a href="">A Receber</a>
-                            </li>
-                            <li>
-                                <a href="cards.html">A Pagar</a>
-                            </li>
-                            <li>
-                                <a href="cards.html">Contas</a>
-                            </li>
-                            <li>
-                                <a href="cards.html">Resumo</a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <!--
-                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Financeira">
-                        <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseFinanceira" data-parent="#exampleAccordion">
-                            <i class="fa fa-fw fa-money"></i>
-                            <span class="nav-link-text">Financeira</span>
-                        </a>
-                        <ul class="sidenav-second-level collapse" id="collapseFinanceira">
-                            <li>
-                                <a href="navbar.html">Contas</a>
-                            </li>
-                            <li>
-                                <a href="cards.html">Entradas</a>
-                            </li>
-                            <li>
-                                <a href="cards.html">Saídas</a>
-                            </li>
-                            <li>
-                                <a href="cards.html">Fechamentos</a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Compras">
-                        <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseCompras" data-parent="#exampleAccordion">
-                            <i class="fa fa-fw fa-credit-card"></i>
-                            <span class="nav-link-text">Compras</span>
-                        </a>
-                        <ul class="sidenav-second-level collapse" id="collapseCompras">
-                            <li>
-                                <a href="navbar.html">Nova Compra</a>
-                            </li>
-                            <li>
-                                <a href="cards.html">Compras</a>
-                            </li>
-                            <li>
-                                <a href="cards.html">Ruptura de Estoque</a>
-                            </li>
-                            <li>
-                                <a href="cards.html">Sobrecarga de Estoque</a>
-                            </li>
-                            <li>
-                                <a href="cards.html">Tempo de Venda</a>
-                            </li>
-                        </ul>
-                    </li>
-                    -->
                 </ul>
                 <ul class="navbar-nav sidenav-toggler">
                     <li class="nav-item">
@@ -168,10 +63,11 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav ml-auto">
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle mr-lg-2" id="messagesDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-fw fa-envelope"></i>
-                            <span class="d-lg-none">Messages
+                            <span class="d-lg-none">Messagens
                                 <span class="badge badge-pill badge-primary">12 New</span>
                             </span>
                             <span class="indicator text-primary d-none d-lg-block">
@@ -262,6 +158,7 @@
                             <i class="fa fa-fw fa-sign-out"></i>Logout</a>
                     </li>
                 </ul>
+
             </div>
         </nav>
         <div class="content-wrapper">
@@ -269,7 +166,7 @@
                 <!-- Breadcrumbs-->
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item">
-                        <a href="index.html">Dashboard</a>
+                        <a href="index.html">Início</a>
                     </li>
                     <li class="breadcrumb-item active"><?= $titulo ?></li>
                 </ol>
@@ -284,7 +181,7 @@
             <footer class="sticky-footer">
                 <div class="container">
                     <div class="text-center">
-                        <small>Copyright © Your Website 2017</small>
+                        <small>Free © NewBGP 2018</small>
                     </div>
                 </div>
             </footer>
@@ -297,40 +194,38 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                            <!-- <h5 class="modal-title" id="exampleModalLabel">Pronto para sair?</h5> -->
                             <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">×</span>
                             </button>
                         </div>
-                        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                        <div class="modal-body">
+                            Deseja sair do sistema ?
+                        </div>
                         <div class="modal-footer">
-                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                            <a class="btn btn-primary" href="login.html">Logout</a>
+                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                            <a class="btn btn-primary" href="?sair=true">Sair</a>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- Bootstrap core JavaScript-->
             <script src="<?= $public ?>templates/vendor/jquery/jquery.min.js"></script>
+            <script src="<?= $url ?>pkj/client/jquery/jquery-migrate-3.0.0.min.js"></script>
             <?php
-            import( "jquery" ) ;
+            //import( "jquery" ) ;
+            
             import( "pkj" ) ;
             import( "datatables" ) ;
-            import( "bind" ) ;
+            import( "bind2" ) ;
             import( "mask" ) ;
             ?>
-            <script>
-                $(function () {
-                    $("input[type='password']").addClass('form-control');
-                })
-            </script>
-
 
             <script src="<?= $public ?>templates/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
             <!-- Core plugin JavaScript-->
             <script src="<?= $public ?>templates/vendor/jquery-easing/jquery.easing.min.js"></script>
             <!-- Custom scripts for all pages-->
-            <script src="<?= $public ?>templates/js/sb-admin.min.js"></script>
+            <!--<script src="<?= $public ?>templates/js/sb-admin.min.js"></script>-->
             <!--<script src="<?= $public ?>templates/vendor/datatables/jquery.dataTables.js"></script>-->
             <!--<script src="<?= $public ?>templates/js/sb-admin-datatables.min.js"></script>-->
 

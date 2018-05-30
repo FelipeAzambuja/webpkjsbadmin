@@ -2,12 +2,10 @@
 $template = 'templates/entrar.php';
 
 function entrar($form) {
-
-    $usuario = one(orm_usuarios()->select([
+    $usuario = one(model_usuarios()->where([
                 'id' => $form['usuario'],
                 'senha' => md5($form['senha'])
-    ]));
-
+    ]))->first();
     if ($usuario == null) {
         alert("Senha errada");
     } else {
@@ -21,7 +19,7 @@ function entrar($form) {
         <form>
             <div class="form-group">
                 <label for="usuario">Usuário</label>
-                <select id="usuario" class="form-control">
+                <select name="usuario" class="form-control">
                     <?php foreach (db()->select('usuarios', '') as $linha): ?>
                         <option value="<?= $linha->id ?>"><?= $linha->email ?></option>
                     <?php endforeach; ?>
@@ -29,12 +27,12 @@ function entrar($form) {
             </div>
             <div class="form-group">
                 <label for="senha">Senha</label>
-                <input class="form-control" id="senha" type="password" placeholder="Senha">
+                <input class="form-control" name="senha" type="password" placeholder="Senha">
             </div>
             <div class="form-group">
                 <div class="form-check">
                     <label class="form-check-label">
-                        <input class="form-check-input" id="lembrar" type="checkbox"> Lembrar</label>
+                        <input class="form-check-input" name="lembrar" type="checkbox"> Lembrar</label>
                 </div>
             </div>
             <a class="btn btn-primary btn-block" href="#" click="entrar()">Entrar</a>

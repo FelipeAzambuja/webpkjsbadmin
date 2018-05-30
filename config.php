@@ -1,18 +1,18 @@
 <?php
 if ($_SERVER['SERVER_NAME'] === 'newbgp.com.br') {
     conf::$dateFormat = 'd/m/Y';
-    conf::$servidor = 'sqlite';
-    conf::$endereco = '../../banco.sqlite';
+    conf::$servidor = 'mysql';
+    conf::$endereco = 'localhost';
     conf::$usuario = 'root';
-    conf::$senha = '';
-    conf::$base = '';
+    conf::$senha = 'root';
+    conf::$base = 'webpkjsbadmin';
     conf::$session = 'database';
 } else {
     conf::$dateFormat = 'd/m/Y';
-    conf::$servidor = 'sqlite';
-    conf::$endereco = '../../banco.sqlite';
+    conf::$servidor = 'mysql';
+    conf::$endereco = 'localhost';
     conf::$usuario = 'root';
-    conf::$senha = '';
-    conf::$base = '';
+    conf::$senha = 'root';
+    conf::$base = 'webpkjsbadmin';
     conf::$session = 'database';
 }

@@ -39,7 +39,7 @@ function send_log($type, $message) {
     <div class="alert alert-<?= $type ?> alert-dismissable">
         <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
         <strong><?= cdate()->format('d/m/Y H:i:s') ?></strong> 
-        <?= $message ?>
+        <?= $message ?> 
     </div>
     <?php
     $html = ob_get_contents();
@@ -71,7 +71,7 @@ function instalar($form) {
     } else {
         $banco = $form['banco'];
     }
-    file_put_contents('config.bck.php', file_get_contents('config.php'));
+    //file_put_contents('config.bck.php', file_get_contents('config.php'));
     /*
     $code .= '<?php'.PHP_EOL;
     $code .= 'conf::$dateFormat = \'d/m/Y\' ;'.PHP_EOL;
@@ -87,12 +87,20 @@ function instalar($form) {
 }
 
 function instalar2($form) {
+    model_usuarios()->create();
     attr('#pgb', 'style', 'width:20%');
     html('#pgb', 'Dados');
     bind()->setTimeout('instalar3()', 1000);
 }
 
 function instalar3($form) {
+    model_usuarios()->where(['nome' => 'Admin'])->delete();
+    $admin = model_usuarios();
+    $admin->nome = 'Admin';
+    $admin->email = 'admin@newbgp.com.br';
+    $admin->nivel = 'Administrador';
+    $admin->senha = md5('123');
+    $admin->insert();
     attr('#pgb', 'style', 'width:30%');
     html('#pgb', 'Aguarde');
     bind()->setTimeout('instalar4()', 1000);
