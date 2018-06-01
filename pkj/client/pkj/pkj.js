@@ -230,6 +230,7 @@ function tagUpdate() {
                         ],
                         responsive: responsive,
                         ajax: $(e).attr("ajax"),
+                        deferRender: true,
                         select: true,
                         keys: true,
                         "language": {
@@ -279,7 +280,7 @@ function tagUpdate() {
             }
         }
     });
-    
+
     /*
      $("input[type='checkbox']").each(function (i, e) {
      if ($(e).attr("value") != undefined) {
@@ -355,7 +356,7 @@ function tagUpdate() {
         contador++;
     });
 
-    
+
 }
 $(function () {
 //    $('body').hide();
