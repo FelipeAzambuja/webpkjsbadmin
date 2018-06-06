@@ -225,7 +225,7 @@ if(session_get('usuario') === ''){
             <!-- Core plugin JavaScript-->
             <script src="<?= $public ?>templates/vendor/jquery-easing/jquery.easing.min.js"></script>
             <!-- Custom scripts for all pages-->
-            <!--<script src="<?= $public ?>templates/js/sb-admin.min.js"></script>-->
+            <script src="<?= $public ?>templates/js/sb-admin.min.js"></script>
             <!--<script src="<?= $public ?>templates/vendor/datatables/jquery.dataTables.js"></script>-->
             <!--<script src="<?= $public ?>templates/js/sb-admin-datatables.min.js"></script>-->
 
