@@ -274,7 +274,7 @@ function tagUpdate() {
 
 
     $("select").each(function (i, e) {
-        if ($(e).val() == '') {
+        if ($(e).val() !== $(e).attr("value")) {
             if ($(e).attr("value") != undefined) {
                 $(e).val($(e).attr("value"));
             }

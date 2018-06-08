@@ -21,7 +21,7 @@ function adicionar($form) {
 function editar($form) {
     $usuario = model_usuarios();
     if (upload_parser('imagem')->is_ok()) {
-        $usuario->imagem = upload_parser($form['imagem'])->data();
+        $usuario->imagem = upload_parser('imagem')->data();
     }
     $usuario->nome = $form['nome'];
     $usuario->email = $form['email'];
